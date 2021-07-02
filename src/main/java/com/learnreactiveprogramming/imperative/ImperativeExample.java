@@ -15,7 +15,7 @@ public class ImperativeExample {
     private static List<String> namesGreaterThanSize(List<String> names, int size) {
         var filteredNames = new ArrayList<String>();
         for (String name : names) {
-            if (name.length() > size && !filteredNames.contains(name))
+            if (name.length() > size && !filteredNames.contains(name.toUpperCase()))
                 filteredNames.add(name.toUpperCase());
         }
 
