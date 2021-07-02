@@ -15,7 +15,10 @@ public class FluxAndMonoGeneratorServiceTest {
 
         // then
         StepVerifier.create(namesFlux)
-                .expectNext("alex", "ben", "chloe")
+//                .expectNext("alex", "ben", "chloe")
+//                .expectNextCount(3)
+                .expectNext("alex")
+                .expectNextCount(2)
                 .verifyComplete();
     }
 }
