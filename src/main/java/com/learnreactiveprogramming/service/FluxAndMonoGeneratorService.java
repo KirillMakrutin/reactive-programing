@@ -10,14 +10,14 @@ public class FluxAndMonoGeneratorService {
         FluxAndMonoGeneratorService service = new FluxAndMonoGeneratorService();
         service.namesFlux().subscribe(System.out::println);
         service.nameMono().subscribe(System.out::println);
-        service.nameMono().doOnNext(System.out::println).block();
+//        service.nameMono().doOnNext(System.out::println).block();
     }
 
     public Flux<String> namesFlux() {
-        return Flux.fromIterable(List.of("alex", "ben", "chloe"));
+        return Flux.fromIterable(List.of("alex", "ben", "chloe")).log();
     }
 
     public Mono<String> nameMono() {
-        return Mono.just("carl");
+        return Mono.just("carl").log();
     }
 }
