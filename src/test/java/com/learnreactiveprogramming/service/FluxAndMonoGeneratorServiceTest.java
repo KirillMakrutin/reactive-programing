@@ -55,4 +55,11 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNext("CHLOE")
                 .verifyComplete();
     }
+
+    @Test
+    void namesFluxFlatMap() {
+        StepVerifier.create(fluxAndMonoGeneratorService.namesFluxFlatMap("ALEX"))
+                .expectNext("A", "L", "E", "X")
+                .verifyComplete();
+    }
 }

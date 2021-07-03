@@ -37,6 +37,11 @@ public class FluxAndMonoGeneratorService {
         return flux;
     }
 
+    public Flux<String> namesFluxFlatMap(String name) {
+        return Flux.just(name)
+                .flatMap(next -> Flux.fromArray(name.split("")));
+    }
+
     public Mono<String> nameMono() {
         return Mono.just("carl").log();
     }
