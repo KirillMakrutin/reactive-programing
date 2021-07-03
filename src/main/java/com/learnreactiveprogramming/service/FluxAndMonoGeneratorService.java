@@ -44,7 +44,7 @@ public class FluxAndMonoGeneratorService {
                 .flatMap(next -> Flux.fromArray(next.split("")));
     }
 
-    public Flux<String> namesFluxFlatMapAsync(String ... names) {
+    public Flux<String> namesFluxFlatMapAsync(String... names) {
         Random random = new Random();
         return Flux.fromArray(names)
                 .flatMap(name ->
@@ -54,7 +54,7 @@ public class FluxAndMonoGeneratorService {
                 .log();
     }
 
-    public Flux<String> namesFluxFlatMapSync(String ... names) {
+    public Flux<String> namesFluxFlatMapSync(String... names) {
         Random random = new Random();
         return Flux.fromArray(names)
                 .concatMap(name ->
@@ -66,5 +66,15 @@ public class FluxAndMonoGeneratorService {
 
     public Mono<String> nameMono() {
         return Mono.just("carl").log();
+    }
+
+    public Mono<List<String>> nameCharsMono() {
+        return nameMono()
+                .flatMap(name -> Mono.just(List.of(name.split(""))));
+    }
+
+    public Flux<String> nameMonoConcatWith(Mono<String> anotherMono) {
+        return nameMono()
+                .concatWith(anotherMono);
     }
 }

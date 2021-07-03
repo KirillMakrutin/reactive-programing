@@ -1,7 +1,10 @@
 package com.learnreactiveprogramming.service;
 
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
+import java.util.List;
 
 public class FluxAndMonoGeneratorServiceTest {
     FluxAndMonoGeneratorService fluxAndMonoGeneratorService = new FluxAndMonoGeneratorService();
@@ -74,6 +77,21 @@ public class FluxAndMonoGeneratorServiceTest {
     void namesFluxFlatMapSync() {
         StepVerifier.create(fluxAndMonoGeneratorService.namesFluxFlatMapSync("ALEX", "BOB"))
                 .expectNext("A", "L", "E", "X", "B", "O", "B")
+                .verifyComplete();
+    }
+
+    @Test
+    void nameCharsMono() {
+
+        StepVerifier.create(fluxAndMonoGeneratorService.nameCharsMono())
+                .expectNext(List.of("c", "a", "r", "l"))
+                .verifyComplete();
+    }
+
+    @Test
+    void nameMonoConcatWith() {
+        StepVerifier.create(fluxAndMonoGeneratorService.nameMonoConcatWith(Mono.just("bob")))
+                .expectNext("carl", "bob")
                 .verifyComplete();
     }
 }
