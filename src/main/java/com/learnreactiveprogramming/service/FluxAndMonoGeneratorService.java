@@ -54,6 +54,16 @@ public class FluxAndMonoGeneratorService {
                 .log();
     }
 
+    public Flux<String> namesFluxFlatMapSync(String ... names) {
+        Random random = new Random();
+        return Flux.fromArray(names)
+                .concatMap(name ->
+                        Flux.fromArray(name.split(""))
+                                .delayElements(Duration.ofMillis(random.nextInt(1_000))))
+//                                .delayElements(Duration.ofMillis(100)))
+                .log();
+    }
+
     public Mono<String> nameMono() {
         return Mono.just("carl").log();
     }
