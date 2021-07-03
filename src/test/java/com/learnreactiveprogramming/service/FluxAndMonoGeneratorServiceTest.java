@@ -144,4 +144,25 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNext("switchIfEmpty")
                 .verifyComplete();
     }
+
+    @Test
+    void exploreConcat() {
+        StepVerifier.create(fluxAndMonoGeneratorService.exploreConcat())
+                .expectNext("A", "B", "C", "D", "E", "F")
+                .verifyComplete();
+    }
+
+    @Test
+    void exploreConcatWith() {
+        StepVerifier.create(fluxAndMonoGeneratorService.exploreConcatWith())
+                .expectNext("A", "B", "C", "D", "E", "F")
+                .verifyComplete();
+    }
+
+    @Test
+    void exploreMonoConcatWith() {
+        StepVerifier.create(fluxAndMonoGeneratorService.exploreMonoConcatWith())
+                .expectNext("A", "B")
+                .verifyComplete();
+    }
 }

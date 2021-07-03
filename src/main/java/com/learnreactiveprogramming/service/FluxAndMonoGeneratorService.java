@@ -115,4 +115,19 @@ public class FluxAndMonoGeneratorService {
                 .switchIfEmpty(Mono.just("switchIfEmpty"));
     }
 
+    public Flux<String> exploreConcat() {
+        var abc = Flux.just("A", "B", "C");
+        var def = Flux.just("D", "E", "F");
+
+        return Flux.concat(abc, def);
+    }
+
+    public Flux<String> exploreConcatWith() {
+        return Flux.just("A", "B", "C").concatWith(Flux.just("D", "E", "F"));
+    }
+
+    public Flux<String> exploreMonoConcatWith() {
+        return Mono.just("A").concatWith(Mono.just("B"));
+    }
+
 }
