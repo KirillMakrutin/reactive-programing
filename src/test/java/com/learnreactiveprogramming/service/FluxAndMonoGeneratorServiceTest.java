@@ -61,6 +61,26 @@ public class FluxAndMonoGeneratorServiceTest {
     }
 
     @Test
+    void namesFluxFilterDefault() {
+        var flux = fluxAndMonoGeneratorService
+                .namesFluxFilter(5);
+
+        StepVerifier.create(flux)
+                .expectNext("empty")
+                .verifyComplete();
+    }
+
+    @Test
+    void namesFluxFilterSwitchIfEmpty() {
+        var flux = fluxAndMonoGeneratorService
+                .namesFluxFilterSwitchIfEmpty(5);
+
+        StepVerifier.create(flux)
+                .expectNext("switch", "if", "empty")
+                .verifyComplete();
+    }
+
+    @Test
     void namesFluxFlatMap() {
         StepVerifier.create(fluxAndMonoGeneratorService.namesFluxFlatMap("ALEX"))
                 .expectNext("A", "L", "E", "X")

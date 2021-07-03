@@ -29,7 +29,17 @@ public class FluxAndMonoGeneratorService {
     public Flux<String> namesFluxFilter(int filterByLength) {
         return Flux.fromIterable(List.of("alex", "ben", "chloe"))
                 .map(String::toUpperCase)
-                .filter(name -> name.length() > filterByLength);
+                .filter(name -> name.length() > filterByLength)
+                .defaultIfEmpty("empty")
+                .log();
+    }
+
+    public Flux<String> namesFluxFilterSwitchIfEmpty(int filterByLength) {
+        return Flux.fromIterable(List.of("alex", "ben", "chloe"))
+                .map(String::toUpperCase)
+                .filter(name -> name.length() > filterByLength)
+                .switchIfEmpty(Flux.just("switch", "if", "empty"))
+                .log();
     }
 
 
@@ -92,4 +102,5 @@ public class FluxAndMonoGeneratorService {
         return nameMono()
                 .concatWith(anotherMono);
     }
+
 }
