@@ -2,6 +2,7 @@ package com.learnreactiveprogramming.service;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
 import java.time.Duration;
 import java.util.List;
@@ -155,6 +156,35 @@ public class FluxAndMonoGeneratorService {
                 .delayElements(Duration.ofMillis(1000));
 
         return Flux.mergeSequential(_1stFlux, _2ndFlux).log();
+    }
+
+    public Flux<Tuple2<String, String>> exploreZip() {
+        var _1stFlux = Flux.just("A", "B", "C", "D", "E", "F")
+                .delayElements(Duration.ofMillis(500));
+        var _2ndFlux = Flux.just("X", "Y", "Z")
+                .delayElements(Duration.ofMillis(1000));
+
+        return Flux.zip(_1stFlux, _2ndFlux).log();
+    }
+
+    public Flux<String> exploreZipMap() {
+        var _1stFlux = Flux.just("A", "B", "C", "D", "E", "F")
+                .delayElements(Duration.ofMillis(500));
+        var _2ndFlux = Flux.just("X", "Y", "Z")
+                .delayElements(Duration.ofMillis(1000));
+        var _3ndFlux = Flux.just("1", "2", "3", "4")
+                .delayElements(Duration.ofMillis(800));
+
+        return Flux.zip(_1stFlux, _2ndFlux, _3ndFlux).log().map(tuple3 -> tuple3.getT1() + tuple3.getT2() + tuple3.getT3()).log();
+    }
+
+    public Flux<String> exploreZipCombine() {
+        var _1stFlux = Flux.just("A", "B", "C", "D", "E", "F")
+                .delayElements(Duration.ofMillis(500));
+        var _2ndFlux = Flux.just("X", "Y", "Z")
+                .delayElements(Duration.ofMillis(200));
+
+        return Flux.zip(_1stFlux, _2ndFlux, (first, second) -> first + second).log();
     }
 
 }

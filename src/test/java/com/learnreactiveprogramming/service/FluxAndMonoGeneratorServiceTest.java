@@ -186,4 +186,25 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNextCount(8)
                 .verifyComplete();
     }
+
+    @Test
+    void exploreZip() {
+        StepVerifier.create(fluxAndMonoGeneratorService.exploreZip())
+                .expectNextCount(3)
+                .verifyComplete();
+    }
+
+    @Test
+    void exploreZipMap() {
+        StepVerifier.create(fluxAndMonoGeneratorService.exploreZipMap())
+                .expectNextCount(3)
+                .verifyComplete();
+    }
+
+    @Test
+    void exploreZipCombine() {
+        StepVerifier.create(fluxAndMonoGeneratorService.exploreZipCombine())
+                .expectNext("AX", "BY", "CZ")
+                .verifyComplete();
+    }
 }
