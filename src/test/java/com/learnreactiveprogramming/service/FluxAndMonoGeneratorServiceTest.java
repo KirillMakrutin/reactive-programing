@@ -165,4 +165,18 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNext("A", "B")
                 .verifyComplete();
     }
+
+    @Test
+    void exploreMerge() {
+        StepVerifier.create(fluxAndMonoGeneratorService.exploreMerge())
+                .expectNextCount(8)
+                .verifyComplete();
+    }
+
+    @Test
+    void exploreMergeWith() {
+        StepVerifier.create(fluxAndMonoGeneratorService.exploreMergeWith())
+                .expectNextCount(8)
+                .verifyComplete();
+    }
 }
