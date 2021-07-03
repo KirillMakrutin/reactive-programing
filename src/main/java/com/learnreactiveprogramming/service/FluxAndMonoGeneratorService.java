@@ -148,4 +148,13 @@ public class FluxAndMonoGeneratorService {
         return _1stFlux.mergeWith(_2ndFlux).log();
     }
 
+    public Flux<String> exploreMergeSequential() {
+        var _1stFlux = Flux.just("A", "B", "C", "D", "E", "F")
+                .delayElements(Duration.ofMillis(500));
+        var _2ndFlux = Flux.just("X", "Y", "Z")
+                .delayElements(Duration.ofMillis(1000));
+
+        return Flux.mergeSequential(_1stFlux, _2ndFlux).log();
+    }
+
 }
