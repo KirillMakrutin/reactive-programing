@@ -94,4 +94,11 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNext("carl", "bob")
                 .verifyComplete();
     }
+
+    @Test
+    void monoFlatMapMany() {
+        StepVerifier.create(fluxAndMonoGeneratorService.monoFlatMapMany())
+                .expectNext("c", "a", "r", "l")
+                .verifyComplete();
+    }
 }

@@ -73,6 +73,16 @@ public class FluxAndMonoGeneratorService {
                 .flatMap(name -> Mono.just(List.of(name.split(""))));
     }
 
+    public Flux<String> monoFlatMapMany() {
+        return nameMono()
+                .flatMapMany(this::split)
+                .log();
+    }
+
+    private Flux<String> split(String name) {
+        return Flux.fromArray(name.split(""));
+    }
+
     public Flux<String> nameMonoConcatWith(Mono<String> anotherMono) {
         return nameMono()
                 .concatWith(anotherMono);
