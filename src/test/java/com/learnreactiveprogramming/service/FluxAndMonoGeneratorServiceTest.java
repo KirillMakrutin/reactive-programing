@@ -38,4 +38,21 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNext("ALEX", "BEN", "CHLOE")
                 .verifyComplete();
     }
+
+    @Test
+    void namesFluxImmutability() {
+        var flux = fluxAndMonoGeneratorService.namesFluxImmutability();
+        StepVerifier.create(flux)
+                .expectNext("alex", "ben", "chloe")
+                .verifyComplete();
+    }
+
+    @Test
+    void namesFluxFilter() {
+        var flux = fluxAndMonoGeneratorService.namesFluxFilter(4);
+
+        StepVerifier.create(flux)
+                .expectNext("CHLOE")
+                .verifyComplete();
+    }
 }
