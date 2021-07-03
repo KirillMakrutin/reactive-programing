@@ -1,6 +1,7 @@
 package com.learnreactiveprogramming.service;
 
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -99,6 +100,13 @@ public class FluxAndMonoGeneratorServiceTest {
     void monoFlatMapMany() {
         StepVerifier.create(fluxAndMonoGeneratorService.monoFlatMapMany())
                 .expectNext("c", "a", "r", "l")
+                .verifyComplete();
+    }
+
+    @Test
+    void reduceFluxToMono() {
+        StepVerifier.create(fluxAndMonoGeneratorService.reduceFluxToMono(Flux.just("a", "le", "x")))
+                .expectNext("ALEX")
                 .verifyComplete();
     }
 }

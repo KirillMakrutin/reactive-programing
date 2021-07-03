@@ -44,6 +44,11 @@ public class FluxAndMonoGeneratorService {
                 .flatMap(next -> Flux.fromArray(next.split("")));
     }
 
+    public Mono<String> reduceFluxToMono(Flux<String> nameChars) {
+        return nameChars
+                .reduce("", (result, current) -> result + current.toUpperCase());
+    }
+
     public Flux<String> namesFluxFlatMapAsync(String... names) {
         Random random = new Random();
         return Flux.fromArray(names)
