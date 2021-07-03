@@ -178,6 +178,17 @@ public class FluxAndMonoGeneratorService {
         return Flux.zip(_1stFlux, _2ndFlux, _3ndFlux).log().map(tuple3 -> tuple3.getT1() + tuple3.getT2() + tuple3.getT3()).log();
     }
 
+    public Flux<String> exploreZipWith() {
+        var _1stFlux = Flux.just("A", "B", "C", "D", "E", "F")
+                .delayElements(Duration.ofMillis(500));
+        var _2ndFlux = Flux.just("X", "Y", "Z")
+                .delayElements(Duration.ofMillis(1000));
+        var _3ndFlux = Flux.just("1", "2", "3", "4")
+                .delayElements(Duration.ofMillis(800));
+
+        return _1stFlux.zipWith(_3ndFlux, (one, other) -> one + other).log().zipWith(_2ndFlux, (one, other) -> one + other).log();
+    }
+
     public Flux<String> exploreZipCombine() {
         var _1stFlux = Flux.just("A", "B", "C", "D", "E", "F")
                 .delayElements(Duration.ofMillis(500));

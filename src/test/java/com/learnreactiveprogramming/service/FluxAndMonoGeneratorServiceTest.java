@@ -202,6 +202,13 @@ public class FluxAndMonoGeneratorServiceTest {
     }
 
     @Test
+    void exploreZipWith() {
+        StepVerifier.create(fluxAndMonoGeneratorService.exploreZipWith())
+                .expectNextCount(3)
+                .verifyComplete();
+    }
+
+    @Test
     void exploreZipCombine() {
         StepVerifier.create(fluxAndMonoGeneratorService.exploreZipCombine())
                 .expectNext("AX", "BY", "CZ")
