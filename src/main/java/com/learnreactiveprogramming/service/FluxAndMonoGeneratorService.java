@@ -103,4 +103,16 @@ public class FluxAndMonoGeneratorService {
                 .concatWith(anotherMono);
     }
 
+    public Mono<String> monoDefaultIfEmpty(int length) {
+        return Mono.just("alex")
+                .filter(name -> name.length() > length)
+                .defaultIfEmpty("defaultIfEmpty");
+    }
+
+    public Mono<String> monoSwitchIfEmpty(int length) {
+        return Mono.just("alex")
+                .filter(name -> name.length() > length)
+                .switchIfEmpty(Mono.just("switchIfEmpty"));
+    }
+
 }

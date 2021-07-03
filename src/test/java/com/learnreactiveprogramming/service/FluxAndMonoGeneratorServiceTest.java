@@ -129,4 +129,19 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNext("ALEX")
                 .verifyComplete();
     }
+
+    @Test
+    void monoDefaultIfEmpty() {
+        StepVerifier.create(fluxAndMonoGeneratorService.monoDefaultIfEmpty(5))
+                .expectNext("defaultIfEmpty")
+                .verifyComplete();
+    }
+
+
+    @Test
+    void monoSwitchIfEmpty() {
+        StepVerifier.create(fluxAndMonoGeneratorService.monoSwitchIfEmpty(5))
+                .expectNext("switchIfEmpty")
+                .verifyComplete();
+    }
 }
