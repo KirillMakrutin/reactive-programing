@@ -17,7 +17,11 @@ class MovieReactiveServiceTest {
         var allMovies = movieReactiveService.getAllMovies().log();
 
         StepVerifier.create(allMovies)
-                .expectNextCount(3)
+                .assertNext(movie -> {
+                    assertEquals("Batman Begins", movie.getMovie().getName());
+                    assertEquals(2, movie.getReviewList().size());
+                })
+                .expectNextCount(2)
                 .verifyComplete();
     }
 }
