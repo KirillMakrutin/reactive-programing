@@ -31,6 +31,28 @@ public class FluxAndMonoSchedulersService {
         return namesFlux.mergeWith(namesFlux1);
     }
 
+    public Flux<String> namesSubscribeOn() {
+        var namesFlux = getMappedFlux(namesList)
+                .log()
+                .subscribeOn(Schedulers.boundedElastic());
+
+        var namesFlux1 = getMappedFlux(namesList1)
+                .subscribeOn(Schedulers.boundedElastic())
+                .map(name -> {
+                    log.info("Name is: {}", name);
+                    return name;
+                })
+                .log();
+
+
+        return namesFlux.mergeWith(namesFlux1);
+    }
+
+    private Flux<String> getMappedFlux(List<String> namesList) {
+        return Flux.fromIterable(namesList)
+                .map(this::upperCase);
+    }
+
     private String upperCase(String name) {
         delay(1000);
         return name.toUpperCase();
