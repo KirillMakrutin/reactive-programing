@@ -1,6 +1,7 @@
 package com.learnreactiveprogramming.service;
 
 import com.learnreactiveprogramming.domain.Movie;
+import com.learnreactiveprogramming.domain.MovieInfo;
 import com.learnreactiveprogramming.domain.Review;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -22,5 +23,12 @@ public class MovieReactiveService {
                         .collectList().map(reviews -> new Movie(
                                 movieInfo.getMovieId(), movieInfo, reviews)));
 
+    }
+
+    public Mono<Movie> getMovieById(long movieId) {
+        var movieInfoMono = movieInfoService.retrieveMovieInfoMonoUsingId(movieId);
+        var reviewsFlux = reviewService.retrieveReviewsFlux(movieId).collectList();
+
+        return movieInfoMono.zipWith(reviewsFlux, (movieInfo, reviews) -> new Movie(movieInfo.getMovieId(), movieInfo, reviews)).log();
     }
 }
