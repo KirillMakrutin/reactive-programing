@@ -214,4 +214,11 @@ public class FluxAndMonoGeneratorServiceTest {
                 .expectNext("AX", "BY", "CZ")
                 .verifyComplete();
     }
+
+    @Test
+    void exploreRetryWhen() {
+        StepVerifier.create(fluxAndMonoGeneratorService.exploreRetryWhen())
+                .expectNext("A", "B", "C")
+                .verifyComplete();
+    }
 }

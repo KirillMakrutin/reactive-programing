@@ -3,8 +3,10 @@ package com.learnreactiveprogramming.service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
+import reactor.util.retry.Retry;
 
 import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Random;
 
@@ -196,6 +198,21 @@ public class FluxAndMonoGeneratorService {
                 .delayElements(Duration.ofMillis(200));
 
         return Flux.zip(_1stFlux, _2ndFlux, (first, second) -> first + second).log();
+    }
+
+    public Flux<String> exploreRetryWhen() {
+        LocalTime localTime = LocalTime.now();
+
+        return Flux.just("A", "B", "C")
+                .log()
+                .map(next -> {
+                    if (localTime.plusSeconds(3).isBefore(LocalTime.now())) {
+                        return next;
+                    }
+
+                    throw new RuntimeException("Exception occurred");
+                })
+                .retryWhen(Retry.backoff(4, Duration.ofSeconds(1)));
     }
 
 }
