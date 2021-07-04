@@ -212,7 +212,10 @@ public class FluxAndMonoGeneratorService {
 
                     throw new RuntimeException("Exception occurred");
                 })
-                .retryWhen(Retry.backoff(4, Duration.ofSeconds(1)));
+                .retryWhen(
+                        Retry.backoff(4, Duration.ofSeconds(1))
+                                .filter(ex -> ex instanceof RuntimeException)
+                .doAfterRetry(signal -> System.err.println("Error: "+ signal.failure().getMessage())));
     }
 
 }
