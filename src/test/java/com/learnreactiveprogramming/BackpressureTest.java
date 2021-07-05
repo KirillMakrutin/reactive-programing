@@ -91,7 +91,7 @@ public class BackpressureTest {
         final var rangeFlux = Flux.range(1, 100).log();
 
         rangeFlux.onBackpressureDrop(item -> log.info("Dropped item is: {}", item))
-                .subscribe(new BaseSubscriber<>(){
+                .subscribe(new BaseSubscriber<>() {
 
                     @Override
                     protected void hookOnSubscribe(Subscription subscription) {
@@ -103,7 +103,50 @@ public class BackpressureTest {
                         log.info("Next number: {}", value);
                     }
                 });
+    }
 
+    @Test
+    public void testBackPressure_onBackPressureBuffer() {
 
+        final var rangeFlux = Flux.range(1, 100).log();
+
+        rangeFlux.onBackpressureBuffer(10)
+                .subscribe(new BaseSubscriber<>() {
+
+                    @Override
+                    protected void hookOnSubscribe(Subscription subscription) {
+                        request(2);
+                    }
+
+                    @Override
+                    protected void hookOnNext(Integer value) {
+                        log.info("Next number: {}", value);
+                    }
+                });
+    }
+
+    @Test
+    public void testBackPressure_onBackPressureError() {
+
+        final var rangeFlux = Flux.range(1, 100).log();
+
+        rangeFlux.onBackpressureError()
+                .subscribe(new BaseSubscriber<>() {
+
+                    @Override
+                    protected void hookOnSubscribe(Subscription subscription) {
+                        request(2);
+                    }
+
+                    @Override
+                    protected void hookOnNext(Integer value) {
+                        log.info("Next number: {}", value);
+                    }
+
+                    @Override
+                    protected void hookOnError(Throwable throwable) {
+                        log.error("Error occurred:", throwable);
+                    }
+                });
     }
 }
