@@ -84,4 +84,26 @@ public class BackpressureTest {
             }
         }
     }
+
+    @Test
+    public void testBackPressure_onBackPressureDrop() {
+
+        final var rangeFlux = Flux.range(1, 100).log();
+
+        rangeFlux.onBackpressureDrop(item -> log.info("Dropped item is: {}", item))
+                .subscribe(new BaseSubscriber<>(){
+
+                    @Override
+                    protected void hookOnSubscribe(Subscription subscription) {
+                        request(2);
+                    }
+
+                    @Override
+                    protected void hookOnNext(Integer value) {
+                        log.info("Next number: {}", value);
+                    }
+                });
+
+
+    }
 }
