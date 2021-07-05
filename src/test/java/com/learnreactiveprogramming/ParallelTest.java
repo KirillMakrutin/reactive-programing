@@ -42,6 +42,20 @@ public class ParallelTest {
         log.info("Exit");
     }
 
+    @Test
+    public void testParallelFlatMapSequential() throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(1);
+        Flux.range(1, 6)
+                .flatMapSequential(num -> Mono.just(num).map(this::transform).subscribeOn(Schedulers.parallel()))
+                .log()
+                .doOnComplete(latch::countDown)
+                .subscribe(next -> log.info("Next: {}", next));
+
+        latch.await();
+
+        log.info("Exit");
+    }
+
     private String transform(Integer num) {
         try {
             SECONDS.sleep(1);
