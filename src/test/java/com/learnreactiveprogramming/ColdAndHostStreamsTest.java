@@ -3,10 +3,12 @@ package com.learnreactiveprogramming;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static reactor.core.publisher.Sinks.EmitFailureHandler.FAIL_FAST;
 
 @Slf4j
 public class ColdAndHostStreamsTest {
@@ -35,5 +37,25 @@ public class ColdAndHostStreamsTest {
 
         SECONDS.sleep(6);
 
+    }
+
+    @Test
+    void testHotSinksPublisher() {
+        Sinks.Many<String> hotSource = Sinks.unsafe().many()
+                .multicast()
+                .directBestEffort();
+
+        Flux<String> hotFlux = hotSource.asFlux().map(String::toUpperCase);
+
+        hotFlux.subscribe(d -> System.out.println("Subscriber 1 to Hot Source: "+d));
+
+        hotSource.emitNext("blue", FAIL_FAST);
+        hotSource.tryEmitNext("green").orThrow();
+
+        hotFlux.subscribe(d -> System.out.println("Subscriber 2 to Hot Source: "+d));
+
+        hotSource.emitNext("orange", FAIL_FAST);
+        hotSource.emitNext("purple", FAIL_FAST);
+        hotSource.emitComplete(FAIL_FAST);
     }
 }
